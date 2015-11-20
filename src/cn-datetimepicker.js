@@ -28,9 +28,9 @@
           restrict: 'E',
           require: 'ngModel',
           template: '' +
-          '<div class="dropdown">' +
+          '<div dropdown class="dropdown">' +
           '  <div class="input-group" data-target="#" id="{{inputId}}-container"' +
-          '       data-toggle="{{isDisabled ? \'\' : \'dropdown\'}}">' +
+          '       dropdown-toggle ng-disabled="{{isDisabled}}">' +
           '    <input type="text" class="form-control" ' +
           '           id="{{inputId}}" ' +
           '           name="{{inputId}}" ' +
@@ -112,10 +112,9 @@
               }
             });
           }
-        }
+        };
       })
       .directive('datetimepicker', ['dateTimePickerConfig', function(defaultConfig) {
-        "use strict";
 
         var validateConfiguration = function(configuration) {
           var validOptions = ['startView', 'minView', 'minuteStep', 'dropdownSelector', 'weekStart'];
