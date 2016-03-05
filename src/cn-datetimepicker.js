@@ -37,7 +37,8 @@
           '           ng-model="formattedNgModel" ' +
           '           ng-blur="updateModel()" ' +
           '           ng-disabled="isDisabled" ' +
-          '           ng-required="required">' +
+          '           ng-required="required"' +
+          '           placeholder="{{placeholder}}">' +
           '    <span class="input-group-btn">' +
           '      <button class="btn" ng-disabled="isDisabled">' +
           '        <i class="fa fa-calendar"></i>' +
@@ -63,12 +64,13 @@
             formatString: '@',
             modelType: '@',
             //modelFormat: '@',
-            required: '=',
+            required: '=cnDateRequired',
             onChange: '&'
           },
 
           link: function($scope, elem, attrs, ctrl) {
             //$scope.required = attrs.required;
+            $scope.placeholder = attrs.placeholder;
             $scope.modelFormat = 'YYYY-MM-DD HH:mm:ss';
 
             elem.find('input').bind('keydown keypress', function(event) {
@@ -87,7 +89,7 @@
               }
             };
 
-            $scope.$watch('ngModel', function(newVal) {
+            $scope.$watch('ngModel', function(newVal, prevVal) {
               var modelValue;
               console.log('$scope.ngModel, newVal:', $scope.ngModel, newVal);
               if($scope.ngModel) {
@@ -109,8 +111,12 @@
                 $scope.onChange({$value: newVal});
               }
               ctrl.$setValidity('schemaForm', true);
+              console.log('$scope.required:', $scope.required, ctrl);
               if($scope.required) {
                 ctrl.$setValidity('tv4-302', !!$scope.ngModel);
+              }
+              if(!angular.equals(newVal, prevVal)) {
+                ctrl.$setDirty();
               }
             });
           }
