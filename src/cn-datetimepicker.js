@@ -111,7 +111,6 @@
                 $scope.onChange({$value: newVal});
               }
               ctrl.$setValidity('schemaForm', true);
-              console.log('$scope.required:', $scope.required, ctrl);
               if($scope.required) {
                 ctrl.$setValidity('tv4-302', !!$scope.ngModel);
               }
