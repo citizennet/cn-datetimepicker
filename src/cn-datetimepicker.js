@@ -91,7 +91,7 @@
 
             $scope.$watch('ngModel', function(newVal, prevVal) {
               var modelValue;
-              console.log('$scope.ngModel, newVal:', $scope.ngModel, newVal);
+              //console.log('$scope.ngModel, newVal:', $scope.ngModel, newVal);
               if($scope.ngModel) {
                 $scope.formattedNgModel = moment($scope.ngModel).format($scope.formatString || 'M/DD/YYYY h:mm a');
 
