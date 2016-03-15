@@ -91,7 +91,7 @@
 
             $scope.$watch('ngModel', function(newVal, prevVal) {
               var modelValue;
-              console.log('$scope.ngModel, newVal:', $scope.ngModel, newVal);
+              //console.log('$scope.ngModel, newVal:', $scope.ngModel, newVal);
               if($scope.ngModel) {
                 $scope.formattedNgModel = moment($scope.ngModel).format($scope.formatString || 'M/DD/YYYY h:mm a');
 
@@ -111,7 +111,6 @@
                 $scope.onChange({$value: newVal});
               }
               ctrl.$setValidity('schemaForm', true);
-              console.log('$scope.required:', $scope.required, ctrl);
               if($scope.required) {
                 ctrl.$setValidity('tv4-302', !!$scope.ngModel);
               }
