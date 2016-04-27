@@ -77,9 +77,10 @@
         formatString: '@',
         modelType: '@',
         //modelFormat: '@',
-        viewFormatter: '=?',
         modelFormatter: '=?',
         modelParser: '=?',
+        viewFormatter: '=?',
+        viewParser: '=?',
         required: '=cnDateRequired',
         onChange: '&'
       },
@@ -93,10 +94,21 @@
       $scope.modelFormat = 'YYYY-MM-DD HH:mm:ss';
       $scope.modelFormatter = $scope.modelFormatter || formatModel;
       $scope.placeholder = attrs.placeholder;
+      $scope.updateModel = updateModel;
 
       //////////
 
+      //elem.find('input').bind('keydown keypress', function(event) {
+      //  if(event.which === 13) {
+      //    event.stopPropagation();
+      //    event.preventDefault();
+      //
+      //    $scope.$apply($scope.updateModel);
+      //  }
+      //});
+
       $scope.$watch('ngModel', function(newVal, prevVal) {
+        console.log('ngModel:', newVal);
         if($scope.onChange) {
           $scope.onChange({$value: newVal});
         }
@@ -116,13 +128,17 @@
         let date = moment(val);
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();
       }
+
+      function updateModel(val) {
+        $scope.ngModel = val;
+      }
     }
   }
 
   function cnDatetimeConfig() {
     return {
       restrict: 'A',
-      require: 'ngModel',
+      require: '^ngModel',
       priority: 9000,
       scope: true,
       link: Link
@@ -131,6 +147,7 @@
     function Link($scope, elem, attrs, ctrl) {
       console.log('$scope:', $scope);
       ctrl.$formatters.unshift($scope.viewFormatter || formatView);
+      ctrl.$parsers.unshift($scope.viewParser || parseView);
 
       ////////
 
@@ -139,6 +156,22 @@
 
         return moment(val).format($scope.formatString || 'M/DD/YYYY h:mm a');
       }
+
+      function parseView(val) {
+        if(!val) return val;
+
+        let m = moment(val, $scope.formatString || 'M/DD/YYYY h:mm a');
+        let update = $scope.modelType === 'string' ? m.format($scope.modelFormat) : m.toDate();
+
+        console.log('parseView:', val, update);
+
+        return update;
+      }
+
+      $scope.$watch('ngModel', function(newVal, prevVal) {
+        console.log('ngModel2:', newVal);
+        $scope.updateModel(newVal);
+      });
     }
   }
 
