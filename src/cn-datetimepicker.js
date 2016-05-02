@@ -41,11 +41,12 @@
           <div dropdown class="dropdown">
             <div class="input-group" data-target="#" id="{{inputId}}-container"
                  dropdown-toggle ng-disabled="{{isDisabled}}">
-              <input type="text" class="form-control"
+              <input type="text"
+                     class="form-control"
                      id="{{inputId}}"
                      name="{{inputId}}"
                      ng-model="ngModel"
-                     cn-datetime-config
+                     cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
                      ng-required="required"
                      placeholder="{{placeholder}}">
@@ -77,9 +78,10 @@
         formatString: '@',
         modelType: '@',
         //modelFormat: '@',
-        viewFormatter: '=?',
         modelFormatter: '=?',
         modelParser: '=?',
+        viewFormatter: '=?',
+        viewParser: '=?',
         required: '=cnDateRequired',
         onChange: '&'
       },
@@ -88,11 +90,21 @@
     };
 
     function Link($scope, elem, attrs, ctrl) {
+
+      let input = elem.find('input');
+
       //$scope.required = attrs.required;
       $scope.iconClass = attrs.iconClass || 'fa fa-calendar';
       $scope.modelFormat = 'YYYY-MM-DD HH:mm:ss';
       $scope.modelFormatter = $scope.modelFormatter || formatModel;
+      $scope.viewFormatter = $scope.viewFormatter || formatView;
+      $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
+
+      $scope.inputConfig = {
+        viewFormatter: $scope.viewFormatter,
+        viewParser: $scope.viewParser
+      };
 
       //////////
 
@@ -102,7 +114,7 @@
         }
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!$scope.ngModel);
+          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
         }
         if(!angular.equals(newVal, prevVal)) {
           ctrl.$setDirty();
@@ -116,6 +128,23 @@
         let date = moment(val);
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();
       }
+
+      function formatView(val) {
+        if(!val) return val;
+
+        return moment(val).format($scope.formatString || 'M/DD/YYYY h:mm a');
+      }
+
+      function parseView(val) {
+        if(!val) return;
+
+        let m = moment(val, $scope.formatString || 'M/DD/YYYY h:mm a');
+        let update = $scope.modelType === 'string' ? m.format($scope.modelFormat) : m.toDate();
+
+        console.log('parseView:', val, update);
+
+        return update;
+      }
     }
   }
 
@@ -124,21 +153,15 @@
       restrict: 'A',
       require: 'ngModel',
       priority: 9000,
-      scope: true,
+      scope: {
+        config: '=cnDatetimeConfig'
+      },
       link: Link
     };
 
     function Link($scope, elem, attrs, ctrl) {
-      console.log('$scope:', $scope);
-      ctrl.$formatters.unshift($scope.viewFormatter || formatView);
-
-      ////////
-
-      function formatView(val) {
-        if(!val) return val;
-
-        return moment(val).format($scope.formatString || 'M/DD/YYYY h:mm a');
-      }
+      ctrl.$formatters.unshift($scope.config.viewFormatter);
+      ctrl.$parsers.unshift($scope.config.viewParser);
     }
   }
 
@@ -158,7 +181,6 @@
         }
       }
 
-      console.log('configuration.maxView:', configuration.maxView, configuration.startView);
       if(configuration.maxView && validViews.indexOf(configuration.maxView) < validViews.indexOf(configuration.startView)) {
         configuration.startView = configuration.maxView;
       }
@@ -393,7 +415,6 @@
           },
 
           hour: function(unixDate) {
-            console.log('unixDate:', unixDate, moment(unixDate).toString());
             var selectedDate = moment(unixDate).hour(0).minute(0).second(0);
 
             var activeFormat = scope.ngModel ? moment(scope.modelParser(scope.ngModel)).format('YYYY-MM-DD H') : '';
@@ -427,10 +448,8 @@
 
           minute: function(unixDate) {
             var selectedDate = moment(unixDate).minute(0).second(0);
-            console.log('selectedDate:', selectedDate, selectedDate.toString());
 
             var activeFormat = scope.ngModel ? moment(scope.modelParser(scope.ngModel)).format('YYYY-MM-DD H:mm') : '';
-            console.log('scope.modelParser(scope.ngModel):', scope.modelParser(scope.ngModel), scope.ngModel, activeFormat, unixDate);
 
             var result = {
               'previousView': 'hour',
@@ -477,12 +496,12 @@
         };
 
         var getUTCTime = function() {
+          console.log('getUTCTime:', scope.ngModel);
           var tempDate = (scope.ngModel ? moment(scope.modelParser(scope.ngModel)).toDate() : new Date());
           return tempDate.getTime()/* - (tempDate.getTimezoneOffset() * 60000)*/;
         };
 
         scope.changeView = function(viewName, unixDate, event, invalid, setTime) {
-          console.log('changeView:', unixDate, moment(unixDate).toString());
           //unixDate = unixDate && _.isDate(unixDate) ? unixDate : scope.modelParser(unixDate).toDate();
           if(event) {
             event.stopPropagation();
@@ -494,13 +513,13 @@
           if(viewName && (unixDate > -Infinity) && dataFactory[viewName]) {
             if(setTime && viewName !== 'setTime') {
               var newDate = moment(unixDate),
-                  curDate = moment(scope.modelParser(scope.ngModel));
+                  curDate = scope.ngModel ? moment(scope.modelParser(scope.ngModel)) : moment().startOf('hour');
 
               _.each(scope.data.setUnits, function(unit) {
                 var setVal = newDate[unit](),
                     setDate = curDate[unit](setVal).valueOf();
 
-                console.log('setVal, setDate:', unit, setVal, setDate);
+                //console.log('setVal, setDate:', unit, setVal, setDate);
                 dataFactory.setTime(setDate, true);
               });
             }
