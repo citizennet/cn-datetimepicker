@@ -121,10 +121,12 @@
         }
       });
 
-      input.blur(function() {
-        let date = moment($scope.ngModel);
-        if (date.year() < 2000) $scope.ngModel = date.year(date.year() + 2000);
-      });
+      if ($scope.maxView !== "hour") {
+        input.blur(function() {
+          let date = moment($scope.ngModel);
+          if (date.year() < 2000) $scope.ngModel = date.year(date.year() + 2000);
+        });
+      }
 
       function formatModel(val) {
         console.log('parsing:', val);
