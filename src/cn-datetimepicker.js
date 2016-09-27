@@ -61,6 +61,7 @@
                 <datetimepicker
                   ng-model="ngModel"
                   min-date="minDate"
+                  max-date="maxDate"
                   model-formatter="modelFormatter"
                   model-parser="modelParser"
                   datetimepicker-config="{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }">
@@ -71,6 +72,7 @@
       scope: {
         ngModel: '=',
         minDate: '=',
+        maxDate: '=',
         maxView: '@',
         minView: '@',
         isDisabled: '=',
@@ -275,6 +277,7 @@
         ngModel: "=",
         onSetTime: "=",
         minDate: '=',
+        maxDate: '=',
         modelFormatter: '=?',
         modelParser: '=?',
         datetimepickerConfig: "=?"
@@ -331,7 +334,8 @@
                 'past': yearMoment.year() < startDecade,
                 'future': yearMoment.year() > startDecade + 9,
                 'active': yearMoment.year() === activeYear,
-                'disabled': scope.minDate && yearMoment.year() < moment(scope.minDate).year()
+                'disabled': (scope.minDate && yearMoment.year() < moment(scope.minDate).year()) ||
+                            (scope.maxDate && yearMoment.year() > moment(scope.maxDate).year())
               };
 
               result.dates.push(dateValue);
@@ -364,7 +368,8 @@
                 'date': monthMoment.valueOf(),
                 'display': monthMoment.format('MMM'),
                 'active': monthMoment.format('YYYY-MMM') === activeDate,
-                'disabled': scope.minDate && monthMoment.add(1, 'month').isBefore(scope.minDate)
+                'disabled': (scope.minDate && monthMoment.add(1, 'month').isBefore(scope.minDate)) ||
+                            (scope.maxDate && monthMoment.subtract(1, 'month').isAfter(scope.maxDate))
               };
 
               result.dates.push(dateValue);
@@ -411,7 +416,8 @@
                   'active': monthMoment.format('YYYY-MMM-DD') === activeDate,
                   'past': monthMoment.isBefore(startOfMonth),
                   'future': monthMoment.isAfter(endOfMonth),
-                  'disabled': scope.minDate && monthMoment.add(1, 'days').isBefore(scope.minDate)
+                  'disabled': (scope.minDate && monthMoment.add(1, 'days').isBefore(scope.minDate)) ||
+                              (scope.maxDate && monthMoment.subtract(1, 'days').isAfter(scope.maxDate))
                 };
                 week.dates.push(dateValue);
               }
@@ -444,7 +450,8 @@
                 'date': hourMoment.valueOf(),
                 'display': hourMoment.format('h a'),
                 'active': hourMoment.format('YYYY-MM-DD H') === activeFormat,
-                'disabled': scope.minDate && hourMoment.add(1, 'hours').isBefore(scope.minDate)
+                'disabled': (scope.minDate && hourMoment.add(1, 'hours').isBefore(scope.minDate)) ||
+                            (scope.maxDate && hourMoment.subtract(1, 'hours').isAfter(scope.maxDate))
               };
 
               result.dates.push(dateValue);
@@ -478,7 +485,8 @@
                 'date': hourMoment.valueOf(),
                 'display': hourMoment.format('h:mm'),
                 'active': hourMoment.format('YYYY-MM-DD H:mm') === activeFormat,
-                'disabled': scope.minDate && hourMoment.subtract(1, 'minutes').isBefore(scope.minDate)
+                'disabled': (scope.minDate && hourMoment.subtract(1, 'minutes').isBefore(scope.minDate)) ||
+                            (scope.maxDate && hourMoment.add(1, 'minutes').isAfter(scope.maxDate))
               };
 
               result.dates.push(dateValue);
