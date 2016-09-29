@@ -115,7 +115,6 @@
           $scope.onChange({$value: newVal});
         }
         ctrl.$setValidity('schemaForm', true);
-        console.log('#required#', $scope.required);
         if($scope.required) {
           ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
         }
@@ -132,7 +131,6 @@
       }
 
       function formatModel(val) {
-        console.log('parsing:', val);
         if(!val) return val;
 
         let date = moment(val);
@@ -150,8 +148,6 @@
 
         let m = moment(val, $scope.formatString || 'M/DD/YYYY h:mm a');
         let update = $scope.modelType === 'string' ? m.format($scope.modelFormat) : m.toDate();
-
-        console.log('parseView:', val, update);
 
         return update;
       }
@@ -512,7 +508,6 @@
         };
 
         var getUTCTime = function() {
-          console.log('getUTCTime:', scope.ngModel);
           var tempDate = (scope.ngModel ? moment(scope.modelParser(scope.ngModel)).toDate() : new Date());
           return tempDate.getTime()/* - (tempDate.getTimezoneOffset() * 60000)*/;
         };
@@ -535,7 +530,6 @@
                 var setVal = newDate[unit](),
                     setDate = curDate[unit](setVal).valueOf();
 
-                //console.log('setVal, setDate:', unit, setVal, setDate);
                 dataFactory.setTime(setDate, true);
               });
             }
