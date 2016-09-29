@@ -115,6 +115,7 @@
           $scope.onChange({$value: newVal});
         }
         ctrl.$setValidity('schemaForm', true);
+        console.log('#required#', $scope.required);
         if($scope.required) {
           ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
         }
@@ -145,7 +146,7 @@
       }
 
       function parseView(val) {
-        if(!val) return;
+        if(!val) return val;
 
         let m = moment(val, $scope.formatString || 'M/DD/YYYY h:mm a');
         let update = $scope.modelType === 'string' ? m.format($scope.modelFormat) : m.toDate();
