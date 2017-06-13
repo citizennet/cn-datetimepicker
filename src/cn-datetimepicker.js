@@ -99,6 +99,7 @@
       $scope.iconClass = attrs.iconClass || 'fa fa-calendar';
       $scope.modelFormat = 'YYYY-MM-DD HH:mm:ss';
       $scope.modelFormatter = $scope.modelFormatter || formatModel;
+      $scope.modelParser = $scope.modelParser || (val => val);
       $scope.viewFormatter = $scope.viewFormatter || formatView;
       $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
