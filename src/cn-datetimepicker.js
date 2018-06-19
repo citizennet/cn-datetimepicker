@@ -62,6 +62,7 @@
                   ng-model="ngModel"
                   min-date="minDate"
                   max-date="maxDate"
+                  default-time="defaultTime"
                   model-formatter="modelFormatter"
                   model-parser="modelParser"
                   datetimepicker-config="{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }">
@@ -73,6 +74,7 @@
         ngModel: '=',
         minDate: '=',
         maxDate: '=',
+        defaultTime: '=',
         maxView: '@',
         minView: '@',
         isDisabled: '=',
@@ -280,6 +282,7 @@
         onSetTime: "=",
         minDate: '=',
         maxDate: '=',
+        defaultTime: '=',
         modelFormatter: '=?',
         modelParser: '=?',
         datetimepickerConfig: "=?"
@@ -529,7 +532,11 @@
           if(viewName && (unixDate > -Infinity) && dataFactory[viewName]) {
             if(setTime && viewName !== 'setTime') {
               var newDate = moment(unixDate),
-                  curDate = scope.ngModel ? moment(scope.modelParser(scope.ngModel)) : moment().startOf('hour');
+                  curDate;
+
+              if (scope.ngModel) { curDate = moment(scope.modelParser(scope.ngModel)) }
+              else if (scope.defaultTime) { curDate = moment(scope.defaultTime, "H:mm:ss") }
+              else { curDate = moment().startOf('hour') }
 
               _.each(scope.data.setUnits, function(unit) {
                 var setVal = newDate[unit](),
