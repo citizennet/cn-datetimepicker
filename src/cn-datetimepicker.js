@@ -105,6 +105,7 @@
       $scope.viewFormatter = $scope.viewFormatter || formatView;
       $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
+      $scope.modelType = $scope.modelType || 'string';
 
       $scope.inputConfig = {
         viewFormatter: $scope.viewFormatter,
