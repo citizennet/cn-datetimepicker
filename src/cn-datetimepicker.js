@@ -122,18 +122,16 @@
         if(!angular.equals($scope.localNgModel, $scope.ngModel)) {
           ctrl.$setDirty();
         }
-
-        $scope.ngModel = $scope.localNgModel;
         
         if($scope.onChange) {
-          $scope.onChange({$value: $scope.ngModel});
-          $scope.localNgModel = $scope.ngModel;
+          $scope.onChange({$value: $scope.localNgModel});
         }
         
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+          ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
+        $scope.ngModel = $scope.localNgModel;
       }
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
