@@ -85,27 +85,25 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }; //////////
 
       $scope.lostFocus = function () {
-        $scope.$apply(function () {
-          console.log('lostFocus', $scope);
+        console.log('lostFocus', $scope, ctrl);
 
-          if (!angular.equals($scope.localNgModel, $scope.ngModel)) {
-            ctrl.$setDirty();
-          }
+        if (!angular.equals($scope.localNgModel, $scope.ngModel)) {
+          ctrl.$setDirty();
+        }
 
-          $scope.ngModel = $scope.localNgModel;
+        $scope.ngModel = $scope.localNgModel;
 
-          if ($scope.onChange) {
-            $scope.onChange({
-              $value: $scope.ngModel
-            });
-          }
+        if ($scope.onChange) {
+          $scope.onChange({
+            $value: $scope.ngModel
+          });
+        }
 
-          ctrl.$setValidity('schemaForm', true);
+        ctrl.$setValidity('schemaForm', true);
 
-          if ($scope.required) {
-            ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-          }
-        });
+        if ($scope.required) {
+          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+        }
       };
 
       $scope.$watch('localNgModel', function (newVal, prevVal) {
