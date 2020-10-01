@@ -128,17 +128,16 @@
           return;
         }
         console.log('Process others', $scope);
-        if($scope.onChange) {
-
-          $scope.onChange({$value: newVal});
-        }
-        ctrl.$setValidity('schemaForm', true);
-        if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-        }
-        if(!angular.equals(newVal, prevVal)) {
-          ctrl.$setDirty();
-        }
+        // if($scope.onChange) {
+        //   $scope.onChange({$value: newVal});
+        // }
+        // ctrl.$setValidity('schemaForm', true);
+        // if($scope.required) {
+        //   ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+        // }
+        // if(!angular.equals(newVal, prevVal)) {
+        //   ctrl.$setDirty();
+        // }
       });
 
       if ($scope.maxView !== "hour") {
