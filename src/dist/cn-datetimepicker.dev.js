@@ -108,29 +108,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         console.log('lostFocus end', $scope, ctrl);
       };
 
-      $scope.$watch('ngModel', function (newVal, prevVal) {
+      $scope.$watch('localNgModel', function (newVal, prevVal) {
         console.log('$scope.$watch', newVal, prevVal);
 
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
-        }
+        } // if(!angular.equals(newVal, prevVal)) {
+        //   ctrl.$setDirty();
+        // }
+        // if($scope.onChange) {
+        //   $scope.onChange({$value: newVal});
+        // }
+        // ctrl.$setValidity('schemaForm', true);
+        // if($scope.required) {
+        //   ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+        // }
 
-        if (!angular.equals(newVal, prevVal)) {
-          ctrl.$setDirty();
-        }
-
-        if ($scope.onChange) {
-          $scope.onChange({
-            $value: newVal
-          });
-        }
-
-        ctrl.$setValidity('schemaForm', true);
-
-        if ($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-        }
       });
 
       if ($scope.maxView !== "hour") {
