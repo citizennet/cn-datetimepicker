@@ -117,23 +117,25 @@
       //////////
 
       $scope.lostFocus = () => {
-        console.log('lostFocus', $scope);
+        $scope.$apply(() => {
+          console.log('lostFocus', $scope);
 
-        if(!angular.equals($scope.localNgModel, $scope.ngModel)) {
-          ctrl.$setDirty();
-        }
+          if(!angular.equals($scope.localNgModel, $scope.ngModel)) {
+            ctrl.$setDirty();
+          }
 
-        $scope.ngModel = $scope.localNgModel;
-        
-        if($scope.onChange) {
-          $scope.onChange({$value: $scope.ngModel});
-        }
-        
-        ctrl.$setValidity('schemaForm', true);
-        if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-        }        
-      }
+          $scope.ngModel = $scope.localNgModel;
+          
+          if($scope.onChange) {
+            $scope.onChange({$value: $scope.ngModel});
+          }
+          
+          ctrl.$setValidity('schemaForm', true);
+          if($scope.required) {
+            ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+          }  
+        }      
+      )}
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
         if(typeof newVal !== $scope.modelType) {
