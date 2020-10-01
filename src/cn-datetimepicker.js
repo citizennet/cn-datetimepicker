@@ -139,7 +139,7 @@
 
       $scope.dopdownToggled = (open) => {
         console.log('dopdownToggled', open);
-      }
+      };
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
         console.log('$scope.$watch', newVal, prevVal);
