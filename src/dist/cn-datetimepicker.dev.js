@@ -35,7 +35,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     return {
       restrict: 'E',
       require: 'ngModel',
-      template: "\n          <div dropdown class=\"dropdown\">\n            <div class=\"input-group\" data-target=\"#\" id=\"{{inputId}}-container\"\n                 dropdown-toggle ng-disabled=\"{{isDisabled}}\">\n              <input type=\"text\"\n                     class=\"form-control\"\n                     id=\"{{inputId}}\"\n                     name=\"{{inputId}}\"\n                     ng-model=\"ngModel\"\n                     cn-datetime-config=\"inputConfig\"\n                     ng-disabled=\"isDisabled\"\n                     ng-required=\"required\"\n                     placeholder=\"{{placeholder}}\">\n              <span class=\"input-group-btn\">\n                <button class=\"btn\" ng-disabled=\"isDisabled\">\n                  <i class=\"{{iconClass}}\"></i>\n                </button>\n              </span>\n            </div>\n            <ul class=\"dropdown-menu cn-datetimepicker-dropdown\" role=\"menu\">\n              <li>\n                <datetimepicker\n                  ng-model=\"ngModel\"\n                  min-date=\"minDate\"\n                  max-date=\"maxDate\"\n                  default-time=\"defaultTime\"\n                  model-formatter=\"modelFormatter\"\n                  model-parser=\"modelParser\"\n                  datetimepicker-config=\"{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }\">\n                </datetimepicker>\n              </li>\n            </ul>\n          </div>",
+      template: "\n          <div dropdown class=\"dropdown\">\n            <div class=\"input-group\" data-target=\"#\" id=\"{{inputId}}-container\"\n                 dropdown-toggle ng-disabled=\"{{isDisabled}}\">\n              <input type=\"text\"\n                     class=\"form-control\"\n                     id=\"{{inputId}}\"\n                     name=\"{{inputId}}\"\n                     ng-model=\"ngModel\"\n                     ng-blur=\"lostFocus()\"\n                     cn-datetime-config=\"inputConfig\"\n                     ng-disabled=\"isDisabled\"\n                     ng-required=\"required\"\n                     placeholder=\"{{placeholder}}\">\n              <span class=\"input-group-btn\">\n                <button class=\"btn\" ng-disabled=\"isDisabled\">\n                  <i class=\"{{iconClass}}\"></i>\n                </button>\n              </span>\n            </div>\n            <ul class=\"dropdown-menu cn-datetimepicker-dropdown\" role=\"menu\">\n              <li>\n                <datetimepicker\n                  ng-model=\"ngModel\"\n                  min-date=\"minDate\"\n                  max-date=\"maxDate\"\n                  default-time=\"defaultTime\"\n                  model-formatter=\"modelFormatter\"\n                  model-parser=\"modelParser\"\n                  datetimepicker-config=\"{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }\">\n                </datetimepicker>\n              </li>\n            </ul>\n          </div>",
       scope: {
         ngModel: '=',
         minDate: '=',
@@ -83,16 +83,23 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         viewParser: $scope.viewParser
       }; //////////
 
+      $scope.lostFocus = function () {
+        console.log('Focus Lost');
+      };
+
       $scope.$watch('ngModel', function (newVal, prevVal) {
         console.log(newVal, prevVal);
 
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
-        } // if($scope.onChange) {
-        //   $scope.onChange({$value: newVal});
-        // }
+        }
 
+        if ($scope.onChange) {
+          $scope.onChange({
+            $value: newVal
+          });
+        }
 
         ctrl.$setValidity('schemaForm', true);
 

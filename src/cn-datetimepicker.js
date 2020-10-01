@@ -46,6 +46,7 @@
                      id="{{inputId}}"
                      name="{{inputId}}"
                      ng-model="ngModel"
+                     ng-blur="lostFocus()"
                      cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
                      ng-required="required"
@@ -114,15 +115,19 @@
 
       //////////
 
+      $scope.lostFocus = () => {
+        console.log('Focus Lost');
+      }
+
       $scope.$watch('ngModel', function(newVal, prevVal) {
         console.log(newVal, prevVal)
         if(typeof newVal !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
         }
-        // if($scope.onChange) {
-        //   $scope.onChange({$value: newVal});
-        // }
+        if($scope.onChange) {
+          $scope.onChange({$value: newVal});
+        }
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
           ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
