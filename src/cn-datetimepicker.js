@@ -115,6 +115,7 @@
       //////////
 
       $scope.$watch('ngModel', function(newVal, prevVal) {
+        console.log(newVal, prevVal)
         if(typeof newVal !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
