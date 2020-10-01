@@ -117,6 +117,7 @@
       //////////
 
       $scope.lostFocus = () => {
+        consoel.log('lostFocus', $scope)
         $scope.ngModel = $scope.localNgModel;
         if($scope.onChange) {
           $scope.onChange({$value: newVal});

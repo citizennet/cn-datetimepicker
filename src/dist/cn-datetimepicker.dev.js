@@ -85,6 +85,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }; //////////
 
       $scope.lostFocus = function () {
+        consoel.log('lostFocus', $scope);
         $scope.ngModel = $scope.localNgModel;
 
         if ($scope.onChange) {
