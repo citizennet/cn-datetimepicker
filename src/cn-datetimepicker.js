@@ -129,9 +129,11 @@
         
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
+          console.log($scope.required, !!($scope.localNgModel || $scope.localNgModel === 0))
           ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
         $scope.ngModel = $scope.localNgModel;
+        console.log('lostFocus end', $scope, ctrl);
       }
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
