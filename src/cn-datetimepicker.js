@@ -45,7 +45,7 @@
                      class="form-control"
                      id="{{inputId}}"
                      name="{{inputId}}"
-                     ng-model="ngModel"
+                     ng-model="localNgModel"
                      ng-blur="lostFocus()"
                      cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
@@ -60,7 +60,7 @@
             <ul class="dropdown-menu cn-datetimepicker-dropdown" role="menu">
               <li>
                 <datetimepicker
-                  ng-model="ngModel"
+                  ng-model="localNgModel"
                   min-date="minDate"
                   max-date="maxDate"
                   default-time="defaultTime"
@@ -107,6 +107,7 @@
       $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
       $scope.modelType = $scope.modelType || 'string';
+      $scope.localNgModel = $scope.ngModel;
 
       $scope.inputConfig = {
         viewFormatter: $scope.viewFormatter,
@@ -116,36 +117,30 @@
       //////////
 
       $scope.lostFocus = () => {
-        console.log('Focus Lost');
-      }
-
-      $scope.$watch('ngModel', function(newVal, prevVal) {
-        console.log('newVal', newVal);
-        console.log('prevVal', prevVal);
-        console.log('$scope.modelType', $scope.modelType);
-        if(typeof newVal !== $scope.modelType) {
-          $scope.ngModel = formatModel(newVal);
-          return;
-        }
-        console.log('Process others', $scope);
+        $scope.ngModel = $scope.localNgModel;
         if($scope.onChange) {
-          console.log('onChange')
-          // $scope.onChange({$value: newVal});
+          $scope.onChange({$value: newVal});
         }
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+          ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
         if(!angular.equals(newVal, prevVal)) {
-          console.log('ctrl.$setDirty();')
-          // ctrl.$setDirty();
+          ctrl.$setDirty();
+        }
+      }
+
+      $scope.$watch('localNgModel', function(newVal, prevVal) {
+        if(typeof newVal !== $scope.modelType) {
+          $scope.localNgModel = formatModel(newVal);
+          return;
         }
       });
 
       if ($scope.maxView !== "hour") {
         input.blur(function() {
-          let date = moment($scope.ngModel);
-          if (date.year() < 2000) $scope.ngModel = date.year(date.year() + 2000);
+          let date = moment($scope.localNgModel);
+          if (date.year() < 2000) $scope.localNgModel = date.year(date.year() + 2000);
         });
       }
 

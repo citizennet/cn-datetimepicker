@@ -35,7 +35,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     return {
       restrict: 'E',
       require: 'ngModel',
-      template: "\n          <div dropdown class=\"dropdown\">\n            <div class=\"input-group\" data-target=\"#\" id=\"{{inputId}}-container\"\n                 dropdown-toggle ng-disabled=\"{{isDisabled}}\">\n              <input type=\"text\"\n                     class=\"form-control\"\n                     id=\"{{inputId}}\"\n                     name=\"{{inputId}}\"\n                     ng-model=\"ngModel\"\n                     ng-blur=\"lostFocus()\"\n                     cn-datetime-config=\"inputConfig\"\n                     ng-disabled=\"isDisabled\"\n                     ng-required=\"required\"\n                     placeholder=\"{{placeholder}}\">\n              <span class=\"input-group-btn\">\n                <button class=\"btn\" ng-disabled=\"isDisabled\">\n                  <i class=\"{{iconClass}}\"></i>\n                </button>\n              </span>\n            </div>\n            <ul class=\"dropdown-menu cn-datetimepicker-dropdown\" role=\"menu\">\n              <li>\n                <datetimepicker\n                  ng-model=\"ngModel\"\n                  min-date=\"minDate\"\n                  max-date=\"maxDate\"\n                  default-time=\"defaultTime\"\n                  model-formatter=\"modelFormatter\"\n                  model-parser=\"modelParser\"\n                  datetimepicker-config=\"{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }\">\n                </datetimepicker>\n              </li>\n            </ul>\n          </div>",
+      template: "\n          <div dropdown class=\"dropdown\">\n            <div class=\"input-group\" data-target=\"#\" id=\"{{inputId}}-container\"\n                 dropdown-toggle ng-disabled=\"{{isDisabled}}\">\n              <input type=\"text\"\n                     class=\"form-control\"\n                     id=\"{{inputId}}\"\n                     name=\"{{inputId}}\"\n                     ng-model=\"localNgModel\"\n                     ng-blur=\"lostFocus()\"\n                     cn-datetime-config=\"inputConfig\"\n                     ng-disabled=\"isDisabled\"\n                     ng-required=\"required\"\n                     placeholder=\"{{placeholder}}\">\n              <span class=\"input-group-btn\">\n                <button class=\"btn\" ng-disabled=\"isDisabled\">\n                  <i class=\"{{iconClass}}\"></i>\n                </button>\n              </span>\n            </div>\n            <ul class=\"dropdown-menu cn-datetimepicker-dropdown\" role=\"menu\">\n              <li>\n                <datetimepicker\n                  ng-model=\"localNgModel\"\n                  min-date=\"minDate\"\n                  max-date=\"maxDate\"\n                  default-time=\"defaultTime\"\n                  model-formatter=\"modelFormatter\"\n                  model-parser=\"modelParser\"\n                  datetimepicker-config=\"{ dropdownSelector: '#' + inputId + '-container', minView: minView || 'minute', maxView: maxView || 'year' }\">\n                </datetimepicker>\n              </li>\n            </ul>\n          </div>",
       scope: {
         ngModel: '=',
         minDate: '=',
@@ -78,46 +78,43 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
       $scope.modelType = $scope.modelType || 'string';
+      $scope.localNgModel = $scope.ngModel;
       $scope.inputConfig = {
         viewFormatter: $scope.viewFormatter,
         viewParser: $scope.viewParser
       }; //////////
 
       $scope.lostFocus = function () {
-        console.log('Focus Lost');
-      };
-
-      $scope.$watch('ngModel', function (newVal, prevVal) {
-        console.log('newVal', newVal);
-        console.log('prevVal', prevVal);
-        console.log('$scope.modelType', $scope.modelType);
-
-        if (_typeof(newVal) !== $scope.modelType) {
-          $scope.ngModel = formatModel(newVal);
-          return;
-        }
-
-        console.log('Process others', $scope);
+        $scope.ngModel = $scope.localNgModel;
 
         if ($scope.onChange) {
-          console.log('onChange'); // $scope.onChange({$value: newVal});
+          $scope.onChange({
+            $value: newVal
+          });
         }
 
         ctrl.$setValidity('schemaForm', true);
 
         if ($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+          ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
 
         if (!angular.equals(newVal, prevVal)) {
-          console.log('ctrl.$setDirty();'); // ctrl.$setDirty();
+          ctrl.$setDirty();
+        }
+      };
+
+      $scope.$watch('localNgModel', function (newVal, prevVal) {
+        if (_typeof(newVal) !== $scope.modelType) {
+          $scope.localNgModel = formatModel(newVal);
+          return;
         }
       });
 
       if ($scope.maxView !== "hour") {
         input.blur(function () {
-          var date = moment($scope.ngModel);
-          if (date.year() < 2000) $scope.ngModel = date.year(date.year() + 2000);
+          var date = moment($scope.localNgModel);
+          if (date.year() < 2000) $scope.localNgModel = date.year(date.year() + 2000);
         });
       }
 
