@@ -145,7 +145,7 @@
 
       $scope.$watch('ngModel', function(newVal, prevVal) {
         console.log('ngModel watch', newVal, prevVal);
-      })
+      });
 
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
