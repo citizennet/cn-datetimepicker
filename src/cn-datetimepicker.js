@@ -125,9 +125,10 @@
 
         $scope.ngModel = $scope.localNgModel;
         
-        // if($scope.onChange) {
-        //   $scope.onChange({$value: $scope.ngModel});
-        // }
+        if($scope.onChange) {
+          $scope.onChange({$value: $scope.ngModel});
+          $scope.localNgModel = $scope.ngModel;
+        }
         
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
