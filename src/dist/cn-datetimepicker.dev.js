@@ -89,13 +89,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
-        }
+        } // if($scope.onChange) {
+        //   $scope.onChange({$value: newVal});
+        // }
 
-        if ($scope.onChange) {
-          $scope.onChange({
-            $value: newVal
-          });
-        }
 
         ctrl.$setValidity('schemaForm', true);
 
@@ -117,8 +114,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       function formatModel(val) {
         if (!val) return val;
+        console.log('formatModel');
         var date = moment(val);
-        console.log(val);
+        console.log('va', val);
         console.log('date.toDate()', date.toDate());
         console.log('date.format($scope.modelFormat)', date.format($scope.modelFormat));
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();

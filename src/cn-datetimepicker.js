@@ -120,9 +120,9 @@
           $scope.ngModel = formatModel(newVal);
           return;
         }
-        if($scope.onChange) {
-          $scope.onChange({$value: newVal});
-        }
+        // if($scope.onChange) {
+        //   $scope.onChange({$value: newVal});
+        // }
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
           ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
@@ -142,8 +142,9 @@
       function formatModel(val) {
         if(!val) return val;
 
+        console.log('formatModel')
         let date = moment(val);
-        console.log(val);
+        console.log('va', val);
         console.log('date.toDate()', date.toDate());
         console.log('date.format($scope.modelFormat)', date.format($scope.modelFormat));
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();
