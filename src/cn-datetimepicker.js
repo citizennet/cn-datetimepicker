@@ -147,6 +147,8 @@
         if(typeof newVal !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
+        } else {
+          $scope.localNgModel = newVal;
         }
       });
 
