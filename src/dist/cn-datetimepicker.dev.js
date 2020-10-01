@@ -109,7 +109,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
 
       $scope.dopdownToggled = function (open) {
-        console.log('');
+        console.log('dopdownToggled', open);
       };
 
       $scope.$watch('localNgModel', function (newVal, prevVal) {
