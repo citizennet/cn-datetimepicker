@@ -129,7 +129,7 @@
         
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
-          console.log($scope.required, !!($scope.localNgModel || $scope.localNgModel === 0))
+          console.log($scope.required, !!($scope.localNgModel || $scope.localNgModel === 0));
           ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
         $scope.ngModel = $scope.localNgModel;
