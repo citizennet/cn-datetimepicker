@@ -38,7 +38,7 @@
       restrict: 'E',
       require: 'ngModel',
       template: `
-          <div dropdown class="dropdown">
+          <div dropdown class="dropdown" on-toggle="dopdownToggled(open)">
             <div class="input-group" data-target="#" id="{{inputId}}-container"
                  dropdown-toggle ng-disabled="{{isDisabled}}">
               <input type="text"
@@ -136,6 +136,10 @@
         $scope.ngModel = $scope.localNgModel;
         console.log('lostFocus end', $scope, ctrl);
       };
+
+      $scope.dopdownToggled = (open) => {
+        console.log('dopdownToggled', open);
+      }
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
         console.log('$scope.$watch', newVal, prevVal);
