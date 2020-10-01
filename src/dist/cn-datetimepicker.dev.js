@@ -117,7 +117,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
 
       $scope.$watch('ngModel', function (newVal, prevVal) {
-        console.log('ngModel watch');
+        console.log('ngModel watch', newVal, prevVal);
       });
       $scope.$watch('localNgModel', function (newVal, prevVal) {
         console.log('$scope.$watch', newVal, prevVal);
