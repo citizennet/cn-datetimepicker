@@ -144,12 +144,14 @@
       };
 
       $scope.$watch('ngModel', function(newVal, prevVal) {
-        console.log('ngModel watch', newVal, prevVal);
+        if(typeof newVal !== $scope.modelType) {
+          $scope.localNgModel = formatModel(newVal);
+          return;
+        }
       });
 
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
-        console.log('$scope.$watch', newVal, prevVal);
         if(typeof newVal !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;

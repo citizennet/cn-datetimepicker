@@ -117,11 +117,12 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
 
       $scope.$watch('ngModel', function (newVal, prevVal) {
-        console.log('ngModel watch', newVal, prevVal);
+        if (_typeof(newVal) !== $scope.modelType) {
+          $scope.localNgModel = formatModel(newVal);
+          return;
+        }
       });
       $scope.$watch('localNgModel', function (newVal, prevVal) {
-        console.log('$scope.$watch', newVal, prevVal);
-
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
