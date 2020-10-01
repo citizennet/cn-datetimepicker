@@ -130,7 +130,7 @@
         console.log('Process others', $scope);
         if($scope.onChange) {
           console.log('onChange')
-          $scope.onChange({$value: newVal});
+          // $scope.onChange({$value: newVal});
         }
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
@@ -138,7 +138,7 @@
         }
         if(!angular.equals(newVal, prevVal)) {
           console.log('ctrl.$setDirty();')
-          ctrl.$setDirty();
+          // ctrl.$setDirty();
         }
       });
 

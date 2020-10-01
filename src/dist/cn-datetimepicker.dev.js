@@ -100,10 +100,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         console.log('Process others', $scope);
 
         if ($scope.onChange) {
-          console.log('onChange');
-          $scope.onChange({
-            $value: newVal
-          });
+          console.log('onChange'); // $scope.onChange({$value: newVal});
         }
 
         ctrl.$setValidity('schemaForm', true);
@@ -113,8 +110,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         }
 
         if (!angular.equals(newVal, prevVal)) {
-          console.log('ctrl.$setDirty();');
-          ctrl.$setDirty();
+          console.log('ctrl.$setDirty();'); // ctrl.$setDirty();
         }
       });
 
