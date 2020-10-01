@@ -452,6 +452,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         scope.changeView = function (viewName, unixDate, event, invalid, setTime) {
           //unixDate = unixDate && _.isDate(unixDate) ? unixDate : scope.modelParser(unixDate).toDate();
+          console.log('changeView', viewName, unixDate, event, invalid, setTime);
+
           if (event) {
             event.stopPropagation();
             event.preventDefault();
