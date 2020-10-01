@@ -63,6 +63,7 @@
                   ng-model="localNgModel"
                   min-date="minDate"
                   max-date="maxDate"
+                  ng-blur="lostFocus()"
                   default-time="defaultTime"
                   model-formatter="modelFormatter"
                   model-parser="modelParser"
