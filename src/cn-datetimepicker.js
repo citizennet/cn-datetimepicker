@@ -117,8 +117,6 @@
       //////////
 
       $scope.lostFocus = () => {
-        console.log('lostFocus', $scope, ctrl);
-
         if(!angular.equals($scope.localNgModel, $scope.ngModel)) {
           ctrl.$setDirty();
         }
@@ -129,15 +127,12 @@
         
         ctrl.$setValidity('schemaForm', true);
         if($scope.required) {
-          console.log($scope.required, !!($scope.localNgModel || $scope.localNgModel === 0));
           ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
         $scope.ngModel = $scope.localNgModel;
-        console.log('lostFocus end', $scope, ctrl);
       };
 
       $scope.dopdownToggled = (open) => {
-        console.log('dopdownToggled', open);
         if (!open) {
           $scope.lostFocus();
         }
@@ -146,31 +141,16 @@
       $scope.$watch('ngModel', function(newVal, prevVal) {
         if(typeof newVal !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
-          return;
         } else {
           $scope.localNgModel = newVal;
         }
       });
 
-
       $scope.$watch('localNgModel', function(newVal, prevVal) {
         if(typeof newVal !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
-        }
-
-        // if(!angular.equals(newVal, prevVal)) {
-        //   ctrl.$setDirty();
-        // }
-        
-        // if($scope.onChange) {
-        //   $scope.onChange({$value: newVal});
-        // }
-        
-        // ctrl.$setValidity('schemaForm', true);
-        // if($scope.required) {
-        //   ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-        // }
+        }       
       });
 
       if ($scope.maxView !== "hour") {
@@ -332,8 +312,6 @@
       },
       replace: true,
       link: function(scope, element, attrs, ctrl) {
-
-        console.log('datetimepicer', scope);
 
         var noop = val => val;
 

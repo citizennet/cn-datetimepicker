@@ -85,8 +85,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }; //////////
 
       $scope.lostFocus = function () {
-        console.log('lostFocus', $scope, ctrl);
-
         if (!angular.equals($scope.localNgModel, $scope.ngModel)) {
           ctrl.$setDirty();
         }
@@ -100,17 +98,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         ctrl.$setValidity('schemaForm', true);
 
         if ($scope.required) {
-          console.log($scope.required, !!($scope.localNgModel || $scope.localNgModel === 0));
           ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
         }
 
         $scope.ngModel = $scope.localNgModel;
-        console.log('lostFocus end', $scope, ctrl);
       };
 
       $scope.dopdownToggled = function (open) {
-        console.log('dopdownToggled', open);
-
         if (!open) {
           $scope.lostFocus();
         }
@@ -119,7 +113,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       $scope.$watch('ngModel', function (newVal, prevVal) {
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
-          return;
         } else {
           $scope.localNgModel = newVal;
         }
@@ -128,17 +121,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
-        } // if(!angular.equals(newVal, prevVal)) {
-        //   ctrl.$setDirty();
-        // }
-        // if($scope.onChange) {
-        //   $scope.onChange({$value: newVal});
-        // }
-        // ctrl.$setValidity('schemaForm', true);
-        // if($scope.required) {
-        //   ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
-        // }
-
+        }
       });
 
       if ($scope.maxView !== "hour") {
@@ -252,8 +235,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       },
       replace: true,
       link: function link(scope, element, attrs, ctrl) {
-        console.log('datetimepicer', scope);
-
         var noop = function noop(val) {
           return val;
         };
