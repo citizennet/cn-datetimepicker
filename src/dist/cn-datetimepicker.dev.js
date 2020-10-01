@@ -91,13 +91,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
           ctrl.$setDirty();
         }
 
-        $scope.ngModel = $scope.localNgModel;
-
-        if ($scope.onChange) {
-          $scope.onChange({
-            $value: $scope.ngModel
-          });
-        }
+        $scope.ngModel = $scope.localNgModel; // if($scope.onChange) {
+        //   $scope.onChange({$value: $scope.ngModel});
+        // }
 
         ctrl.$setValidity('schemaForm', true);
 
