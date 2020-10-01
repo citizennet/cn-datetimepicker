@@ -89,8 +89,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
         if (!angular.equals($scope.localNgModel, $scope.ngModel)) {
           ctrl.$setDirty();
-        } // $scope.ngModel = $scope.localNgModel;
+        }
 
+        $scope.ngModel = $scope.localNgModel;
 
         if ($scope.onChange) {
           $scope.onChange({

@@ -123,7 +123,7 @@
           ctrl.$setDirty();
         }
 
-        // $scope.ngModel = $scope.localNgModel;
+        $scope.ngModel = $scope.localNgModel;
         
         if($scope.onChange) {
           $scope.onChange({$value: $scope.ngModel});
