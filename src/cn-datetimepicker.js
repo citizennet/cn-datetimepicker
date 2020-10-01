@@ -137,6 +137,7 @@
       }
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
+        console.log('$scope.$watch');
         if(typeof newVal !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;

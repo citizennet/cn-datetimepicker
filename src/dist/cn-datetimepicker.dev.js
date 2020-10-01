@@ -109,6 +109,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
 
       $scope.$watch('localNgModel', function (newVal, prevVal) {
+        console.log('$scope.$watch');
+
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.localNgModel = formatModel(newVal);
           return;
