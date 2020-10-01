@@ -46,7 +46,6 @@
                      id="{{inputId}}"
                      name="{{inputId}}"
                      ng-model="localNgModel"
-                     ng-blur="lostFocus()"
                      cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
                      ng-required="required"
@@ -139,6 +138,9 @@
 
       $scope.dopdownToggled = (open) => {
         console.log('dopdownToggled', open);
+        if (!open) {
+          $scope.lostFocus();
+        }
       };
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
