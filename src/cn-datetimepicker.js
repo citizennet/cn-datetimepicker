@@ -120,12 +120,16 @@
       }
 
       $scope.$watch('ngModel', function(newVal, prevVal) {
-        console.log(newVal, prevVal)
+        console.log('newVal', newVal);
+        console.log('prevVal', prevVal);
+        console.log('$scope.modelType', $scope.modelType);
         if(typeof newVal !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
         }
+        console.log('Process others', $scope);
         if($scope.onChange) {
+
           $scope.onChange({$value: newVal});
         }
         ctrl.$setValidity('schemaForm', true);
@@ -147,11 +151,7 @@
       function formatModel(val) {
         if(!val) return val;
 
-        console.log('formatModel')
         let date = moment(val);
-        console.log('va', val);
-        console.log('date.toDate()', date.toDate());
-        console.log('date.format($scope.modelFormat)', date.format($scope.modelFormat));
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();
       }
 

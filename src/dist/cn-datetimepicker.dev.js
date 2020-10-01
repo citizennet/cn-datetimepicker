@@ -88,12 +88,16 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       };
 
       $scope.$watch('ngModel', function (newVal, prevVal) {
-        console.log(newVal, prevVal);
+        console.log('newVal', newVal);
+        console.log('prevVal', prevVal);
+        console.log('$scope.modelType', $scope.modelType);
 
         if (_typeof(newVal) !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
         }
+
+        console.log('Process others', $scope);
 
         if ($scope.onChange) {
           $scope.onChange({
@@ -121,11 +125,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       function formatModel(val) {
         if (!val) return val;
-        console.log('formatModel');
         var date = moment(val);
-        console.log('va', val);
-        console.log('date.toDate()', date.toDate());
-        console.log('date.format($scope.modelFormat)', date.format($scope.modelFormat));
         return $scope.modelType === 'string' ? date.format($scope.modelFormat) : date.toDate();
       }
 
