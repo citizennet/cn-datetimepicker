@@ -134,7 +134,7 @@
         }
         $scope.ngModel = $scope.localNgModel;
         console.log('lostFocus end', $scope, ctrl);
-      }
+      };
 
       $scope.$watch('localNgModel', function(newVal, prevVal) {
         console.log('$scope.$watch');
