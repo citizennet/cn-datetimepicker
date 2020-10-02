@@ -38,14 +38,15 @@
       restrict: 'E',
       require: 'ngModel',
       template: `
-          <div dropdown class="dropdown" on-toggle="dopdownToggled(open)">
+          <div dropdown class="dropdown">
             <div class="input-group" data-target="#" id="{{inputId}}-container"
                  dropdown-toggle ng-disabled="{{isDisabled}}">
               <input type="text"
                      class="form-control"
                      id="{{inputId}}"
                      name="{{inputId}}"
-                     ng-model="localNgModel"
+                     ng-model="ngModel"
+                     ng-model-options="{ updateOn: 'blur'}"
                      cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
                      ng-required="required"
@@ -59,7 +60,7 @@
             <ul class="dropdown-menu cn-datetimepicker-dropdown" role="menu">
               <li>
                 <datetimepicker
-                  ng-model="localNgModel"
+                  ng-model="ngModel"
                   min-date="minDate"
                   max-date="maxDate"
                   default-time="defaultTime"
@@ -106,7 +107,6 @@
       $scope.viewParser = $scope.viewParser || parseView;
       $scope.placeholder = attrs.placeholder;
       $scope.modelType = $scope.modelType || 'string';
-      $scope.localNgModel = $scope.ngModel;
 
       $scope.inputConfig = {
         viewFormatter: $scope.viewFormatter,
@@ -114,48 +114,28 @@
       };
 
       //////////
-
-      $scope.lostFocus = () => {
-        if(!angular.equals($scope.localNgModel, $scope.ngModel)) {
-          ctrl.$setDirty();
-        }
-        
-        if($scope.onChange) {
-          $scope.onChange({$value: $scope.localNgModel});
-        }
-        
-        ctrl.$setValidity('schemaForm', true);
-        if($scope.required) {
-          ctrl.$setValidity('tv4-302', !!($scope.localNgModel || $scope.localNgModel === 0));
-        }
-        $scope.ngModel = $scope.localNgModel;
-      };
-
-      $scope.dopdownToggled = (open) => {
-        if (!open) {
-          $scope.lostFocus();
-        }
-      };
-
+      
       $scope.$watch('ngModel', function(newVal, prevVal) {
         if(typeof newVal !== $scope.modelType) {
-          $scope.localNgModel = formatModel(newVal);
-        } else {
-          $scope.localNgModel = newVal;
-        }
-      });
-
-      $scope.$watch('localNgModel', function(newVal, prevVal) {
-        if(typeof newVal !== $scope.modelType) {
-          $scope.localNgModel = formatModel(newVal);
+          $scope.ngModel = formatModel(newVal);
           return;
-        }       
+        }
+        if($scope.onChange) {
+          $scope.onChange({$value: newVal});
+        }
+        ctrl.$setValidity('schemaForm', true);
+        if($scope.required) {
+          ctrl.$setValidity('tv4-302', !!($scope.ngModel || $scope.ngModel === 0));
+        }
+        if(!angular.equals(newVal, prevVal)) {
+          ctrl.$setDirty();
+        }
       });
 
       if ($scope.maxView !== "hour") {
         input.blur(function() {
-          let date = moment($scope.localNgModel);
-          if (date.year() < 2000) $scope.localNgModel = date.year(date.year() + 2000);
+          let date = moment($scope.ngModel);
+          if (date.year() < 2000) $scope.ngModel = date.year(date.year() + 2000);
         });
       }
 
