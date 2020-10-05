@@ -46,6 +46,7 @@
                      id="{{inputId}}"
                      name="{{inputId}}"
                      ng-model="ngModel"
+                     ng-model-options="{ updateOn: 'blur'}"
                      cn-datetime-config="inputConfig"
                      ng-disabled="isDisabled"
                      ng-required="required"
@@ -535,9 +536,9 @@
               var newDate = moment(unixDate),
                   curDate;
 
-              if (scope.ngModel) { curDate = moment(scope.modelParser(scope.ngModel)) }
-              else if (scope.defaultTime) { curDate = moment(scope.defaultTime, "H:mm:ss") }
-              else { curDate = moment().startOf('hour') }
+              if (scope.ngModel) { curDate = moment(scope.modelParser(scope.ngModel)); }
+              else if (scope.defaultTime) { curDate = moment(scope.defaultTime, "H:mm:ss"); }
+              else { curDate = moment().startOf('hour'); }
 
               _.each(scope.data.setUnits, function(unit) {
                 var setVal = newDate[unit](),
