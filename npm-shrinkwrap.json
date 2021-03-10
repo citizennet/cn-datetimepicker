@@ -1,7 +1,7 @@
 {
   "name": "cn-datetimepicker",
-  "version": "1.0.0",
-  "lockfileVersion": 2,
+  "version": "1.2.0",
+  "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
