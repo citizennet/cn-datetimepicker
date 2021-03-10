@@ -116,7 +116,12 @@
       //////////
 
       $scope.$watch('ngModel', function(newVal, prevVal) {
-        if(newVal && typeof newVal !== $scope.modelType) {
+        if (prevVal && !newVal) {
+          $scope.ngModel = null;
+          ctrl.$setDirty();
+          return;
+        }
+        if(typeof newVal !== $scope.modelType) {
           $scope.ngModel = formatModel(newVal);
           return;
         }
