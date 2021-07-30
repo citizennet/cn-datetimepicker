@@ -130,6 +130,10 @@
         if(!angular.equals(newVal, prevVal)) {
           ctrl.$setDirty();
         }
+
+        if (newVal !== 'Invalid date') {
+          ctrl.$setValidity('tv4-500', true);
+        }
       });
 
       if ($scope.maxView !== "hour") {
@@ -154,8 +158,19 @@
 
       function parseView(val) {
         if(!val) return val;
+        let m = moment(val, [
+          $scope.formatString,
+          'M/D/YY h:mm a',
+          'M/DD/YY h:mm a',
+          'MM/DD/YY h:mm a',
+          'MM/D/YY h:mm a',
+          'M/D/YYYY h:mm a',
+          'M/DD/YYYY h:mm a',
+          'MM/D/YYYY h:mm a',
+          'MM/DD/YYYY h:mm a',
+        ], true);
 
-        let m = moment(val, $scope.formatString || 'M/DD/YYYY h:mm a');
+        ctrl.$setValidity('tv4-500', m.isValid());
         let update = $scope.modelType === 'string' ? m.format($scope.modelFormat) : m.toDate();
 
         return update;
